@@ -83,7 +83,7 @@ def plot_results(predicted, true):
     fig.patch.set_facecolor('white')
     min_v = np.min(true)
     max_v = np.max(true)
-    for i in xrange(9):
+    for i in range(9):
             plt.subplot(3, 3, i+1)
             ax = fig.gca()
             ax.set_aspect('equal')
@@ -91,7 +91,7 @@ def plot_results(predicted, true):
             plt.scatter(true[:, i], predicted[:, i])
             plt.xlabel('True value')
             plt.ylabel('Predicted value')
-            idx_1 = i / 3
+            idx_1 = i // 3
             idx_2 = i % 3
             plt.title('Ep' + str(idx_1) + str(idx_2))
             plt.xlim([min_v, max_v*1.1])
@@ -144,8 +144,8 @@ def main():
     # Determine error
     rmse_train = tbnn.rmse_score(y_train, labels_train)
     rmse_test = tbnn.rmse_score(y_test, labels_test)
-    print "RMSE on training data:", rmse_train
-    print "RMSE on test data:", rmse_test
+    print ("RMSE on training data:", rmse_train)
+    print ("RMSE on test data:", rmse_test)
 
     # Plot the results
     # Note: For this example problem, the only non-zero component should be the 00 component
