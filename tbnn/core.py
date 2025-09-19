@@ -3,7 +3,7 @@ import lasagne
 import theano.tensor as T
 import theano
 import time
-import cPickle as pickle
+import pickle
 
 """
 Copyright 2017 Sandia Corporation. Under the terms of Contract DE-AC04-94AL85000,
@@ -139,7 +139,7 @@ class TBNN:
         input_layer = lasagne.layers.InputLayer(shape=(None, self.structure.num_inputs), input_var=input_x)
         hidden_layer = lasagne.layers.DenseLayer(input_layer, num_units=self.structure.num_nodes,
             nonlinearity=nonlinearity, W=lasagne.init.HeUniform(gain=np.sqrt(2.0)))
-        for i in xrange(self.structure.num_layers - 1):
+        for i in range(self.structure.num_layers - 1):
             hidden_layer = lasagne.layers.DenseLayer(hidden_layer, num_units=self.structure.num_nodes,
                 nonlinearity=nonlinearity, W=lasagne.init.HeUniform(gain=np.sqrt(2.0)))
         linear_layer = lasagne.layers.DenseLayer(hidden_layer, num_units=self.structure.num_tensor_basis,
@@ -168,15 +168,15 @@ class TBNN:
             self.structure.set_num_inputs(x.shape[-1])
         else:
             if self.structure.num_inputs != x.shape[-1]:
-                print "Mis-matched shapes between specified number of inputs and number of features in input array"
+                print ("Mis-matched shapes between specified number of inputs and number of features in input array")
                 raise Exception
 
         if self.structure.num_tensor_basis is None:
             self.structure.set_num_tensor_basis(tb.shape[1])
         else:
             if self.structure.num_tensor_basis != tb.shape[1]:
-                print "Mis-matched shapes between specified number of tensors in \
-                 tensor basis and number of tensors in tb"
+                print ("Mis-matched shapes between specified number of tensors in \
+                 tensor basis and number of tensors in tb")
                 raise Exception
 
     def fit(self, scalar_basis, tensor_basis, labels, max_epochs=1000, min_epochs=0, init_learning_rate=0.01,
@@ -315,8 +315,8 @@ class TBNN:
 
             epoch += 1
 
-        print "Total number of epochs: ", epoch
-        print "Final rmse validation error: ", np.sqrt(val_error)
+        print("Total number of epochs: {}".format(epoch))
+        print("Final rmse validation error: {}".format(np.sqrt(val_error)))
 
     def predict(self, x, tb):
         """
@@ -349,7 +349,7 @@ class TBNN:
         :param y_true: true value
         :param y_predicted: predicted value
         >>> tbnn = TBNN()
-        >>> print tbnn.rmse_score(np.array([1.0, 2.0, 3.0]), np.array([1.0, 5.0, -1.0]))
+        >>> print (tbnn.rmse_score(np.array([1.0, 2.0, 3.0]), np.array([1.0, 5.0, -1.0])))
         2.88675134595
         """
         assert y_true.shape == y_predicted.shape, "Shape mismatch"
@@ -384,6 +384,7 @@ class TBNN:
                labelbottom='off', labelleft='off')
 
     def save(self, filename):
-        pickle.dump(self, open(filename, "wb"))
+        with open(filename, "wb") as handle:
+              pickle.dump(self, handle)
 
 
