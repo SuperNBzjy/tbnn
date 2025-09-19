@@ -33,7 +33,7 @@ class TurbulenceKEpsDataProcessor(DataProcessor):
         tke_eps = tke / eps
         Sij = np.zeros((num_points, 3, 3))
         Rij = np.zeros((num_points, 3, 3))
-        for i in xrange(num_points):
+        for i in range(num_points):
             Sij[i, :, :] = tke_eps[i] * 0.5 * (grad_u[i, :, :] + np.transpose(grad_u[i, :, :]))
             Rij[i, :, :] = tke_eps[i] * 0.5 * (grad_u[i, :, :] - np.transpose(grad_u[i, :, :]))
 
@@ -66,7 +66,7 @@ class TurbulenceKEpsDataProcessor(DataProcessor):
         >>> tdp.mu = 0
         >>> tdp.std = 0
         >>> scalar_basis = tdp.calc_scalar_basis(A, B, is_scale=False)
-        >>> print scalar_basis
+        >>> print (scalar_basis)
         [[ 12.  -2.  24.  -4.  -8.]]
         """
         DataProcessor.calc_scalar_basis(self, Sij, is_train=is_train)
@@ -116,7 +116,7 @@ class TurbulenceKEpsDataProcessor(DataProcessor):
         >>> B[0, 0, 1] = -3.0
         >>> tdp = TurbulenceKEpsDataProcessor()
         >>> tb = tdp.calc_tensor_basis(A, B, is_scale=False)
-        >>> print tb[0, :, :]
+        >>> print (tb[0, :, :])
         [[  0.   0.   0.   0.   0.   0.   0.   0.   0.]
          [  0.   0.   0.   0.   0.   0.   0.   0.   0.]
          [  0.   0.   0.   0.   0.   0.   0.   0.   0.]
@@ -211,8 +211,8 @@ class TurbulenceKEpsDataProcessor(DataProcessor):
         # Flatten into num_points X 9 array
         num_points = sij.shape[0]
         rans_anisotropy = np.zeros((num_points, 9))
-        for i in xrange(3):
-            for j in xrange(3):
+        for i in range(3):
+            for j in range(3):
                 rans_anisotropy[:, i*3+j] = rans_anisotropy_matrix[:, i, j]
         return rans_anisotropy
 
