@@ -1,4 +1,4 @@
-import cPickle as pickle
+import pickle
 import random
 
 """
@@ -18,7 +18,7 @@ class DataProcessor:
 
     def calc_scalar_basis(self, input_tensors, is_train=False, *args, **kwargs):
         if is_train is True or self.mu is None or self.std is None:
-            print "Re-setting normalization constants"
+            print ("Re-setting normalization constants")
 
     def calc_tensor_basis(self, input_tensors, *args, **kwargs):
         pass
@@ -40,7 +40,7 @@ class DataProcessor:
         num_points = inputs.shape[0]
         assert 0 <= fraction <= 1, "fraction must be a real number between 0 and 1"
         num_train = int(fraction*num_points)
-        idx = range(num_points)
+        idx = list(range(num_points))
         if randomize:
             if seed:
                 random.seed(seed)
@@ -51,4 +51,5 @@ class DataProcessor:
                inputs[test_idx, :], tb[test_idx, :, :], outputs[test_idx, :]
 
     def save(self, filename):
-        pickle.dump(self, open(filename, "wb"))
+         with open(filename, "wb") as handle:
+            pickle.dump(self, handle)
