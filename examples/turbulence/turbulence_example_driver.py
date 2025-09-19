@@ -49,8 +49,8 @@ def load_channel_data():
     num_points = data.shape[0]
     grad_u = np.zeros((num_points, 3, 3))
     stresses = np.zeros((num_points, 3, 3))
-    for i in xrange(3):
-        for j in xrange(3):
+    for i in range(3):
+        for j in range(3):
             grad_u[:, i, j] = grad_u_flat[:, i*3+j]
             stresses[:, i, j] = stresses_flat[:, i*3+j]
     return k, eps, grad_u, stresses
@@ -67,7 +67,7 @@ def plot_results(predicted_stresses, true_stresses):
     fig = plt.figure()
     fig.patch.set_facecolor('white')
     on_diag = [0, 4, 8]
-    for i in xrange(9):
+    for i in range(9):
             plt.subplot(3, 3, i+1)
             ax = fig.gca()
             ax.set_aspect('equal')
@@ -75,7 +75,7 @@ def plot_results(predicted_stresses, true_stresses):
             plt.scatter(true_stresses[:, i], predicted_stresses[:, i])
             plt.xlabel('True value')
             plt.ylabel('Predicted value')
-            idx_1 = i / 3
+            idx_1 = i // 3
             idx_2 = i % 3
             plt.title('A' + str(idx_1) + str(idx_2))
             if i in on_diag:
@@ -144,8 +144,8 @@ def main():
     # Determine error
     rmse_train = tbnn.rmse_score(y_train, labels_train)
     rmse_test = tbnn.rmse_score(y_test, labels_test)
-    print "RMSE on training data:", rmse_train
-    print "RMSE on test data:", rmse_test
+    print ("RMSE on training data:", rmse_train)
+    print ("RMSE on test data:", rmse_test)
 
     # Plot the results
     plot_results(y_test, labels_test)
