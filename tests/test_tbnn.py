@@ -52,7 +52,7 @@ class TestTbnn(TestCase):
 
         # check the error
         rmse = my_tbnn.rmse_score(y_test, y_predict)
-        print "RMSE of tests case:", rmse
+        print ("RMSE of tests case:", rmse)
         self.assertTrue(rmse > 0.0)
 
 
