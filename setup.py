@@ -15,13 +15,10 @@ import tbnn
 # to create the distribution:  python setup.py sdist
 # to install the distribution: python setup.py install
 
-if (2, 6) < sys.version_info[:2] > (2, 7):
-    print('WARNING: TBNN lacks thorough testing with your version of Python ({0}.{1}.{2})'.format(*sys.version_info) +
-          os.linesep +
-          '         You may experience some unstablity with this build.')
-if (3, 0) <= sys.version_info[:2]:
-    print('WARNING: TBNN has not been tested with Python 3'.format(os.name) + os.linesep +
-          '         You may experience some unstability with this build.')
+if sys.version_info[:2] < (3, 0):
+    print('WARNING: TBNN now targets Python 3. Your version of Python ({0}.{1}.{2}) is unsupported.'
+          .format(*sys.version_info) + os.linesep +
+          '         You may experience instability with this build.')
 if os.name != 'posix':
     print('WARNING: TBNN has not been tested with your operating system, ({0}).'.format(os.name) + os.linesep +
           '         You may experience some unstability with this build.')
@@ -75,9 +72,7 @@ metadata.update({
             'Environment :: Console',
             'Intended Audience :: Developers',
             'Intended Audience :: Science/Research',
-            'Programming Language :: Python :: 2',
-            'Programming Language :: Python :: 2.6',
-            'Programming Language :: Python :: 2.7'
+            'Programming Language :: Python :: 3'
     ],
     'url': 'http://www.github.com/tbnn',
     'keywords': 'sandia neuralnetwork tensor',
