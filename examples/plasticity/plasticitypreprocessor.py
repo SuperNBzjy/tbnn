@@ -38,14 +38,14 @@ class PlasticityDataProcessor(DataProcessor):
         >>> pdp.mu = 0
         >>> pdp.std = 0
         >>> scalar_basis = pdp.calc_scalar_basis(A, B, is_scale=False)
-        >>> print scalar_basis
+        >>> print (scalar_basis)
         [[  3.   3.   3.   6.  12.  24.   6.  12.   6.  12.]]
         """
 
         num_points = A.shape[0]
         num_invariants = 10  # For 2 symmetric tensors, there are 10 scalar invariants
         invariants = np.zeros((num_points, num_invariants))
-        for i in xrange(num_points):
+        for i in range(num_points):
             invariants[i, 0] = np.trace(A[i, :, :])
             invariants[i, 1] = np.trace(np.dot(A[i, :, :], A[i, :, :]))
             invariants[i, 2] = np.trace(np.dot(np.dot(A[i, :, :], A[i, :, :]), A[i, :, :]))
@@ -104,7 +104,7 @@ class PlasticityDataProcessor(DataProcessor):
         >>> B[0, :, :] = np.eye(3)*2.0
         >>> pdp = PlasticityDataProcessor()
         >>> tb = pdp.calc_tensor_basis(A, B, is_scale=False)
-        >>> print tb[0, :, :]
+        >>> print (tb[0, :, :])
         [[ 1.  0.  0.  0.  1.  0.  0.  0.  1.]
          [ 2.  0.  0.  0.  2.  0.  0.  0.  2.]
          [ 1.  0.  0.  0.  1.  0.  0.  0.  1.]
