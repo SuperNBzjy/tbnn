@@ -24,8 +24,8 @@ if os.name != 'posix':
 
 metadata = dict()
 exclude = ['tests', 'examples']
-
-  from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
 except ImportError as exc:  # pragma: no cover - setuptools is expected to be available
     raise ImportError(
         'setuptools is required to install tbnn. Please install it and retry.'
