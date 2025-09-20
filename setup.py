@@ -10,7 +10,6 @@
 import sys
 import os
 import codecs
-import tbnn
 
 # to create the distribution:  python setup.py sdist
 # to install the distribution: python setup.py install
@@ -24,33 +23,24 @@ if os.name != 'posix':
           '         You may experience some unstability with this build.')
 
 metadata = dict()
-exclude = ['tests','examples']
+exclude = ['tests', 'examples']
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-    from pkgutil import walk_packages
+  from setuptools import setup, find_packages
+except ImportError as exc:  # pragma: no cover - setuptools is expected to be available
+    raise ImportError(
+        'setuptools is required to install tbnn. Please install it and retry.'
+    ) from exc
 
-    def check_exclude(package):
-        if not any(package.startswith(e) for e in exclude):
-            raise ImportError(package)
-
-    include = [tbnn.__name__]
-    for _, name, ispkg in walk_packages(tbnn.__path__, tbnn.__name__ + '.', onerror=check_exclude):
-        if ispkg and not any(name.startswith(e) for e in exclude):
-            include.append(name)
-
-    metadata['packages'] = include
-else:
-    from setuptools import find_packages
-    metadata['packages'] = find_packages(exclude=[x + '.*' for x in exclude])
+metadata['packages'] = find_packages(exclude=[x + '.*' for x in exclude])
 
 here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, 'DESCRIPTION.txt'), encoding='utf-8') as f:
     long_description = f.read()
 
-from tbnn.version import __version__
+version_ns = {}
+with open(os.path.join(here, 'tbnn', 'version.py')) as f:
+    exec(f.read(), version_ns)
+__version__ = version_ns['__version__']
 
 metadata.update({
     'name': 'tbnn',
