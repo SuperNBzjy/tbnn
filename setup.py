@@ -24,6 +24,7 @@ if os.name != 'posix':
 
 metadata = dict()
 exclude = ['tests', 'examples']
+
 try:
     from setuptools import setup, find_packages
 except ImportError as exc:  # pragma: no cover - setuptools is expected to be available
