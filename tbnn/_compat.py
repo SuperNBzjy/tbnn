@@ -1,25 +1,31 @@
-"""Compatibility helpers for deprecated NumPy aliases.
-
-NumPy 1.24 removed a handful of historical alias names such as ``np.bool`` and
-``np.int``.  Theano, which powers the neural network implementation in this
-package, still expects those aliases to be present.  This module reinstates the
-aliases when running on modern NumPy versions so the rest of the codebase can be
-imported without modification.
-"""
+"""Compatibility helpers for deprecated NumPy aliases and distutils shims."""
 
 from __future__ import annotations
+
+import importlib
+import warnings
+from typing import Any
 
 import numpy as np
 
 
-def _ensure_alias(name: str, target) -> None:
-    """Ensure ``numpy.<name>`` exists and points to *target*.
+def _has_legacy_alias(name: str) -> bool:
+    """Return ``True`` when ``numpy.<name>`` is still provided upstream."""
 
-    The helper mirrors the behaviour from older NumPy versions without
-    overwriting the attribute when it is still provided upstream.
-    """
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        warnings.simplefilter("ignore", FutureWarning)
+        return hasattr(np, name)
 
-    if not hasattr(np, name):
+
+def _ensure_alias(name: str, target: Any) -> None:
+    """Ensure ``numpy.<name>`` exists and points to *target*."""
+
+    # NumPy 1.20+ emits FutureWarnings when the deprecated aliases are touched.
+    # Using :func:`hasattr` inside a warnings context keeps the import noise-free
+    # for users on intermediary releases while still reinstating the alias when
+    # it has been removed entirely (NumPy 1.24+).
+    if not _has_legacy_alias(name):
         setattr(np, name, target)
 
 
@@ -39,6 +45,22 @@ _ALIAS_TARGETS = {
 
 for _alias, _target in _ALIAS_TARGETS.items():
     _ensure_alias(_alias, _target)
+
+
+def _ensure_numpy_distutils_shim() -> None:
+    """Provide minimal ``numpy.distutils`` configuration attributes when missing."""
+
+    try:
+        np_config = importlib.import_module("numpy.distutils.__config__")
+    except Exception:  # pragma: no cover - depends on external optional module
+        return
+
+    for _name in ("blas_opt_info", "lapack_opt_info"):
+        if not hasattr(np_config, _name):
+            setattr(np_config, _name, {})
+
+
+_ensure_numpy_distutils_shim()
 
 # ``np.bool_`` remains available as the NumPy boolean scalar type.  Having the
 # ``np.bool`` alias present again ensures both spellings are usable when
