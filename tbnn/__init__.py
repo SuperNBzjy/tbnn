@@ -6,7 +6,7 @@
 # This software is distributed under the BSD-3-Clause license.
 #
 ##############################################################
-
+from . import _compat  # noqa: F401 - ensures NumPy aliases exist before imports
 from .core import TBNN, NetworkStructure, TensorLayer
 from .preprocessor import DataProcessor
 from .version import __version__
