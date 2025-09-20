@@ -168,16 +168,17 @@ class TBNN:
             self.structure.set_num_inputs(x.shape[-1])
         else:
             if self.structure.num_inputs != x.shape[-1]:
-                print ("Mis-matched shapes between specified number of inputs and number of features in input array")
-                raise Exception
+               raise ValueError(
+                    "Mis-matched shapes between specified number of inputs and number of features in input array"
+                     )
 
         if self.structure.num_tensor_basis is None:
             self.structure.set_num_tensor_basis(tb.shape[1])
         else:
             if self.structure.num_tensor_basis != tb.shape[1]:
-                print ("Mis-matched shapes between specified number of tensors in \
-                 tensor basis and number of tensors in tb")
-                raise Exception
+              raise ValueError(
+                    "Mis-matched shapes between specified number of tensors in tensor basis and number of tensors in tb"
+                )
 
     def fit(self, scalar_basis, tensor_basis, labels, max_epochs=1000, min_epochs=0, init_learning_rate=0.01,
             interval=10, average_interval=10, loss=None, optimizer='adam'):
